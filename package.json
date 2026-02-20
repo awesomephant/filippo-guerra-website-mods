@@ -1,0 +1,26 @@
+{
+	"name": "guerra",
+	"version": "1.0.0",
+	"description": "- [ ] Custom cursor\r - [ ] Back to top button\r - [ ] Custom password screen / logo animation\r - [ ] Swipe back from a single view",
+	"license": "UNLICENSED",
+	"type": "module",
+	"author": "hello@maxkohler.com",
+	"main": "index.js",
+	"scripts": {
+		"coverage": "vitest --coverage",
+		"build": "rollup -c",
+		"start": "rollup -w -c",
+		"test": "vitest"
+	},
+	"devDependencies": {
+		"@rollup/plugin-typescript": "^12.3.0",
+		"@vitest/coverage-v8": "4.0.16",
+		"tslib": "^2.8.1",
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.16"
+	},
+	"dependencies": {
+		"@rollup/plugin-terser": "^0.4.4"
+	}
+}
+

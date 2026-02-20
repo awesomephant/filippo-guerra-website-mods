@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"module": "esnext",
+		"removeComments": true,
+		"strict": true,
+		"target": "esnext",
+		"esModuleInterop": true
+	}
+}
