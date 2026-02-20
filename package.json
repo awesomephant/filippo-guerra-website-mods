@@ -10,7 +10,7 @@
 		"coverage": "vitest --coverage",
 		"build:rollup": "npx rollup -c",
 		"watch:rollup": "npx rollup -w -c",
-		"build:eleventy": "yarn exec eleventy",
+		"build:eleventy": "yarn exec eleventy --input=views",
 		"watch:eleventy": "yarn exec eleventy --serve --quiet --input=views",
 		"start": "run-p 'watch:*'",
 		"build": "run-s 'build:*'",
