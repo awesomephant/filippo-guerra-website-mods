@@ -1,5 +1,7 @@
 import typescript from "@rollup/plugin-typescript"
 import terser from "@rollup/plugin-terser"
+import copy from "@guanghechen/rollup-plugin-copy"
+import serve from "rollup-plugin-serve"
 
 export default {
 	input: {
@@ -9,5 +11,13 @@ export default {
 		dir: "dist",
 		entryFileNames: "[name].js"
 	},
-	plugins: [typescript(), terser()]
+	plugins: [
+		copy({
+			watch: "views",
+			targets: [{ src: "views/*.html", dest: "dist" }]
+		}),
+		typescript(),
+		terser(),
+		serve("dist")
+	]
 }
