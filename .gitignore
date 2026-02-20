@@ -1,4 +1,14 @@
-dist/
+_site/
 node_modules/
-coverage/
 documentation
+coverage/
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+yarn-error.log
+.cache
