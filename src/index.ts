@@ -8,5 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	if (footerEl) {
 		new ScrollUp(footerEl)
+	} else {
+		console.log("no container found")
 	}
 })

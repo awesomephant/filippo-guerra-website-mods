@@ -7,6 +7,8 @@ export default class ScrollUp {
 	constructor(container: Element) {
 		this.containerEl = container
 
+		console.log(this.containerEl)
+
 		if (this.containerEl.querySelector(`#${this.buttonId}`)) {
 			return
 		}
