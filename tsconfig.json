@@ -5,5 +5,6 @@
 		"strict": true,
 		"target": "esnext",
 		"esModuleInterop": true
-	}
+	},
+	"include": ["custom.d.ts", "src"]
 }
