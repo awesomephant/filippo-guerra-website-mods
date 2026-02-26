@@ -4,5 +4,9 @@ import ScrollUp from "./Scrollup"
 import SwipeNav from "./SwipeNav"
 
 document.addEventListener("DOMContentLoaded", () => {
-	new Cursor(document.body)
+	const footerEl = document.querySelector(`[page-url="footer"] .page-layout bodycopy`)
+
+	if (footerEl) {
+		new ScrollUp(footerEl)
+	}
 })

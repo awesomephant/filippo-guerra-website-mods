@@ -1,5 +1,5 @@
 export default class Cursor {
-	constructor(container: HTMLElement) {
+	constructor(container: Element) {
 		console.log("cursor")
 	}
 }
