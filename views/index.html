@@ -14,7 +14,7 @@ layout: base.liquid
         {% for f in features %}
         <tr>
             <td>{{ f.title }}</td>
-            <td class="status-{{ f.status }}">{{ f.status }}</td>
+            <td class="status-{{ f.status `}}">{{ f.status }}</td>
             <td>
                 {% if f.route != ""%}
                 <a href="{{ f.route }}">/{{ f.route }}</a>
