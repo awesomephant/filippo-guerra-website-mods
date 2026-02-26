@@ -2,7 +2,7 @@
 layout: base.liquid
 ---
 
-<h1><span>MKVC</span> Filipo Guerra website mods</h1>
+<h1><span>MKVC / </span> {{ site.title }}</h1>
 
 <table>
     <thead>
@@ -14,7 +14,7 @@ layout: base.liquid
         {% for f in features %}
         <tr>
             <td>{{ f.title }}</td>
-            <td class="status-{{ f.status `}}">{{ f.status }}</td>
+            <td class="status-{{ f.status }}">{{ f.status }}</td>
             <td>
                 {% if f.route != ""%}
                 <a href="{{ f.route }}">/{{ f.route }}</a>
