@@ -7,6 +7,11 @@
     <title>{{ site.title }}</title>
 
     <style>
+        @font-face {
+            font-family: Forma;
+            src: url("/assets/FormaDJRMicro-Regular.woff2");
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -34,7 +39,7 @@
             padding: Max(3%, 1rem);
             background: rgb(240, 240, 240);
             line-height: 1.4;
-            font-family: sans-serif;
+            font-family: Forma, sans-serif;
             height: 100%;
         }
 
@@ -122,7 +127,10 @@
             left: 0;
             padding: 0 .75em;
             padding-top: .1em;
+            font-size: 1.1em;
             background: none;
+            font-family: inherit;
+            letter-spacing: .01em;
         }
 
         input:focus {

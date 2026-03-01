@@ -8,4 +8,5 @@ export default function (eleventyConfig) {
 		})
 		return records
 	})
+	eleventyConfig.addPassthroughCopy("assets")
 }
