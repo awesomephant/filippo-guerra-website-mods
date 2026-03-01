@@ -1,5 +1,21 @@
 import { stack, stringToBool } from "./utils"
 
+class Cell {
+	x: number
+	y: number
+	s: number
+	st: number
+
+	constructor(x: number, y: number, s: number) {
+		this.x = x
+		this.y = y
+		this.s = s
+		this.st = s
+	}
+
+	draw(c: CanvasRenderingContext2D) {}
+}
+
 export default class LandingPage {
 	containerEl: Element
 	c: CanvasRenderingContext2D | null
@@ -22,7 +38,7 @@ x    x x x x    x
 		this.c = this.initCanvas()
 
 		if (this.c) {
-			this.render(this.c, this.logo)
+			this.loop()
 		}
 	}
 
@@ -31,7 +47,7 @@ x    x x x x    x
 		canvasEl.classList.add("mkvc--logo")
 
 		const styleEl = document.createElement("style")
-		styleEl.innerText = `.mkvc--logo{width: 40vw;position: absolute; left: 50%; transform: translateX(-50%) translateY(-140%)}`
+		styleEl.innerText = `.mkvc--logo{width: 40vw;position: absolute; left: 50%; transform: translateX(-50%) translateY(-120%)}`
 
 		this.containerEl.appendChild(styleEl)
 		this.containerEl.insertAdjacentElement("afterbegin", canvasEl)
@@ -39,8 +55,15 @@ x    x x x x    x
 		return canvasEl.getContext("2d")
 	}
 
+	stringToCells(s: string): Cell[] {
+		return s.split("").map((c) => {
+			const s = c === "x" ? Math.random() : 0
+			return new Cell(0, 0, s)
+		})
+	}
+
 	parseLogo(s: string) {
-		let letters: boolean[][][] = []
+		let letters: Cell[][][] = []
 		let words = []
 
 		const lines = s.split("\n")
@@ -49,7 +72,10 @@ x    x x x x    x
 
 		letterOffsets.forEach((w, i) => {
 			lines.forEach((l, j) => {
-				const chunk = stringToBool(l.slice(letterOffsets[i], letterOffsets[i + 1])).slice(0, -1)
+				const chunk = this.stringToCells(l.slice(letterOffsets[i], letterOffsets[i + 1])).slice(
+					0,
+					-1
+				)
 				if (letters[i]) {
 					letters[i][j] = chunk
 				} else {
@@ -70,24 +96,32 @@ x    x x x x    x
 		}
 	}
 
-	drawCell(c: CanvasRenderingContext2D, x: number, y: number, r: number, padding: number) {
-		c.translate(x + r, y + r / 2)
+	drawCell(c: CanvasRenderingContext2D, x: number, y: number, r: number, s: number) {
+		c.translate(x + r / 2, y + r / 2)
 		c.rotate(45 * (Math.PI / 180))
 		c.beginPath()
-		c.roundRect(-r / 2, r / r, r - padding, r - padding, r * 0.15)
+		c.roundRect((-r * s) / 2, (-r * s) / 2, r * s, r * s, r * 0.15)
 		c.fill()
 		c.resetTransform()
+	}
+
+	update() {}
+
+	loop() {
+		this.update()
+		//@ts-expect-error
+		this.render(this.c, this.logo)
+		// window.requestAnimationFrame(this.loop)
 	}
 
 	render(c: CanvasRenderingContext2D, logo: any) {
 		c.canvas.width = c.canvas.clientWidth
 		c.canvas.height = c.canvas.clientHeight
 
-		const r = (c.canvas.width / logo.width) * 0.81
+		const r = (c.canvas.width / logo.width) * 0.8
 
-		const padding = r * 0.3
-		const letterSpacing = r * 0.75
-		const wordSpacing = r * 7
+		const letterSpacing = r * 0.7
+		const wordSpacing = r * 7.25
 
 		let letterOffset = 0
 
@@ -99,12 +133,10 @@ x    x x x x    x
 				for (let j = 0; j < letter.length; j++) {
 					const row = letter[j]
 
-					row.forEach((cell: boolean, k: number) => {
-						if (cell) {
-							const x = wordSpacing * w + letterSpacing * i + (letterOffset + k) * r
-							const y = j * r
-							this.drawCell(c, x, y, r, padding)
-						}
+					row.forEach((cell: Cell, k: number) => {
+						const x = wordSpacing * w + letterSpacing * i + (letterOffset + k) * r
+						const y = j * r
+						this.drawCell(c, x, y, r, cell.s)
 					})
 				}
 				letterOffset += letter[0].length
