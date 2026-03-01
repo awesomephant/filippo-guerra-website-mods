@@ -58,6 +58,7 @@ class Attractor {
 
 export default class LandingPage {
 	containerEl: Element
+	passwordEl: HTMLElement
 	c: CanvasRenderingContext2D | null
 	attractors: any[]
 	particles: Particle[]
@@ -79,6 +80,7 @@ x    x x x x    x
 `
 	constructor(container: Element) {
 		this.containerEl = container
+		this.passwordEl = container.querySelector(".submit-wrapper") as HTMLElement
 		this.logo = this.parseLogo(this.logoRaw.trim())
 		this.attractors = []
 		this.particles = []
@@ -95,6 +97,13 @@ x    x x x x    x
 		this.clock = window.setInterval(() => {
 			this.t += 100
 		}, 100)
+
+		this.passwordEl.style.opacity = "0"
+
+		window.setTimeout(() => {
+			this.passwordEl.style.transition = "600ms"
+			this.passwordEl.style.opacity = "1"
+		}, 1600)
 	}
 
 	initCanvas() {
@@ -130,7 +139,7 @@ x    x x x x    x
 				),
 				new Attractor(
 					700,
-					[this.c.canvas.width / 2, this.c.canvas.height + 800],
+					[this.c.canvas.width / 2, this.c.canvas.height + 600],
 					[this.c.canvas.width / 2, this.c.canvas.height / 4],
 					(p: Particle) => p.isLogo,
 					(a: Attractor, p: Particle) =>
