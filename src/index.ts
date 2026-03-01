@@ -13,4 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	cursorEl
 		? new Cursor(cursorEl)
 		: console.warn("Could not initialise cursor (container not found)")
+
+	const logoEl = document.querySelector(".site-password")
+	logoEl
+		? new LandingPage(logoEl)
+		: console.warn("Could not initialise landing page (container not found)")
 })

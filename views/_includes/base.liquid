@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ site.title }}</title>
 
-
     <style>
         * {
             margin: 0;
             padding: 0;
             font-family: inherit;
             font-size: inherit;
+            box-sizing: border-box;
         }
 
         h1 {
@@ -98,14 +98,66 @@
             margin-top: 2em;
             font-size: 1.4rem;
         }
+
+        .site-password {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            margin: auto;
+            height: 0;
+            width: 340px;
+            display: table;
+        }
+
+        .site-password input {
+            border: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 0 1em;
+            background: none;
+        }
+
+        input:focus {
+            outline: 0;
+        }
+
+        .submit-wrapper {
+            border: 1px solid black;
+            border-radius: 100px;
+            overflow: hidden;
+            height: 2.5rem;
+            position: relative;
+        }
+
+        .button-area {
+            position: absolute;
+            border-radius: 100px;
+            background: black;
+            width: 2rem;
+            height: 2rem;
+            right: .5rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .button-area button {
+            display: none;
+        }
     </style>
 
 </head>
 
 <body>
     {{content}}
-
+    {% if not meta %}
     <script src="/main.js" defer></script>
+    {% endif %}
 </body>
 
 </html>
