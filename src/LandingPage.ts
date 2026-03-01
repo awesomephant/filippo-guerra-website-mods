@@ -5,16 +5,17 @@ export default class LandingPage {
 		letters: []
 	}
 	logoRaw: string = `
-xxxx.x.x.x.    .    .    -xxx.    .    .   .   .    
+xxxx.x.x.x.    .    .    -xxx.    .    .   .   .     
 x      x                  x                          
 xxx  x x x xxx  xxx   xx  x xx x  x  xx   xx  xx xxx 
 x    x x x x  x x  x x  x x  x x  x x  x x   x      x
 x    x x x x  x x  x x  x x  x x  x xxxx x   x    xxx
 x    x x x x  x x  x x  x x  x x  x x    x   x   x  x
 x    x x x xxx  xxx   xx   xxx  xxx  xxx x   x    xxx
-x    x x x x    x                                     
-           x    x                                     
-           x    x                                     `
+x    x x x x    x                                    
+           x    x                                    
+           x    x                                   .
+`
 
 	constructor(container: Element) {
 		console.log(this.logoRaw.trim())
@@ -24,7 +25,7 @@ x    x x x x    x
 		this.c = this.initCanvas()
 
 		if (this.c) {
-			this.render()
+			this.render(this.c, this.logo)
 		}
 	}
 
@@ -44,6 +45,7 @@ x    x x x x    x
 	stringToBool(s: string): boolean[] {
 		return s.split("").map((c) => c === "x")
 	}
+
 	stack(arr: number[]): number[] {
 		let res: number[] = []
 		let total = 0
@@ -63,11 +65,10 @@ x    x x x x    x
 
 		let letters: boolean[][][] = []
 
-		const data = s.replace(/\.|-/gi, "").split("\n")
-
 		letterOffsets.forEach((w, i) => {
-			data.forEach((l, j) => {
+			lines.forEach((l, j) => {
 				const chunk = this.stringToBool(l.slice(letterOffsets[i], letterOffsets[i + 1]))
+
 				if (letters[i]) {
 					letters[i][j] = chunk
 				} else {
@@ -83,12 +84,40 @@ x    x x x x    x
 				.map((v, _, arr) => v + arr.length - 1)
 		])
 
-		return { letters }
+		console.log(lines)
+		console.log(letters)
+
+		return { letters, width: lines[0].length, height: lines.length }
 	}
 
-	render() {
-		this.logo.lettters.forEach((l) => {
-			const 
-		})
+	render(c: CanvasRenderingContext2D, logo: any) {
+		c.canvas.width = c.canvas.clientWidth
+		c.canvas.height = c.canvas.clientHeight
+
+		const r = c.canvas.width / logo.width
+		// const ph = c.canvas.height / logo.height
+		const padding = 2
+		let letterOffset = 0
+
+		for (let i = 0; i < logo.letters.length; i++) {
+			const letter = logo.letters[i]
+
+			for (let j = 0; j < letter.length; j++) {
+				const row = letter[j]
+
+				row.forEach((cell: boolean, k: number) => {
+					c.fillStyle = cell ? "red" : "lightgray"
+					const x = (letterOffset + k) * r
+					const y = j * r
+					c.fillRect(x, y, r - padding, r - padding)
+				})
+			}
+
+			letterOffset += letter[0].length
+		}
+
+		// logo.lettters.forEach((l) => {
+		// 	// const
+		// })
 	}
 }
