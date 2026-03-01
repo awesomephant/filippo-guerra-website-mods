@@ -20,11 +20,21 @@
             box-sizing: border-box;
         }
 
+        header a {
+            color: inherit
+        }
+
+        header a:hover {
+            text-decoration: none;
+        }
+
         h1 {
             font-family: monospace;
             margin-bottom: .5em;
             padding-bottom: .2em;
             margin-bottom: 1em;
+            text-transform: uppercase;
+            letter-spacing: .02em;
         }
 
         h1 span {
@@ -36,11 +46,12 @@
         }
 
         body {
-            padding: Max(3%, 1rem);
+            padding: Max(1%, 1rem);
             background: rgb(240, 240, 240);
             line-height: 1.4;
             font-family: Forma, sans-serif;
             height: 100%;
+            overflow-y: scroll;
         }
 
         a {
@@ -166,6 +177,7 @@
             left: 0;
             right: 0;
             bottom: 0;
+            z-index: -1;
 
         }
     </style>
@@ -173,6 +185,12 @@
 </head>
 
 <body>
+    <header>
+        <a href="/">
+            <h1><span>MKVC / </span> {{ site.title }}</h1>
+        </a>
+    </header>
+
     {{content}}
     {% if not meta %}
     <script src="/main.js" defer></script>

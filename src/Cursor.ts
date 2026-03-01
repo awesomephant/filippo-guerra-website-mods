@@ -2,7 +2,7 @@ export default class Cursor {
 	r: number = 25
 	containerEl: HTMLElement
 	cursorEl: HTMLElement
-	position: [number, number] = [0, 0]
+	position: [number, number] = [-1, -1]
 	scale: number = 1
 	active: boolean = false
 	running: boolean = false
@@ -37,9 +37,9 @@ export default class Cursor {
 	registerEvents() {
 		window.addEventListener("mousemove", (e) => {
 			this.position = [e.clientX, e.clientY]
+			this.active = true
 		})
 		window.addEventListener("mouseover", () => {
-			this.active = true
 			this.running = true
 			this.loop()
 		})
