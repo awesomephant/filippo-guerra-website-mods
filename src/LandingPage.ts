@@ -3,9 +3,7 @@ import { stack, stringToBool } from "./utils"
 export default class LandingPage {
 	containerEl: Element
 	c: CanvasRenderingContext2D | null
-	logo: any = {
-		letters: []
-	}
+	logo: any
 	logoRaw: string = `
 xxxx.x.x.x.    .    .    - xxx.    .    .   .   .     
 x      x                  x                           
@@ -33,7 +31,7 @@ x    x x x x    x
 		canvasEl.classList.add("mkvc--logo")
 
 		const styleEl = document.createElement("style")
-		styleEl.innerText = `.mkvc--logo{border: 1px solid red; height: 300px}`
+		styleEl.innerText = `.mkvc--logo{width: 40vw;position: absolute; left: 50%; transform: translateX(-50%) translateY(-140%)}`
 
 		this.containerEl.appendChild(styleEl)
 		this.containerEl.insertAdjacentElement("afterbegin", canvasEl)
@@ -42,13 +40,12 @@ x    x x x x    x
 	}
 
 	parseLogo(s: string) {
-		const lines = s.split("\n")
+		let letters: boolean[][][] = []
+		let words = []
 
-		// find boundaries
+		const lines = s.split("\n")
 		const letterWidths = lines[0].split(/\.|-/gi).map((s) => s.length)
 		const letterOffsets = [0, ...stack(letterWidths.map((w) => w + 1))]
-
-		let letters: boolean[][][] = []
 
 		letterOffsets.forEach((w, i) => {
 			lines.forEach((l, j) => {
@@ -61,23 +58,19 @@ x    x x x x    x
 			})
 		})
 
-		let words = []
-		const wordOffsets = stack([
-			...lines[0].split("-").map((s) => (s.match(/\./g) || []).length + 1)
-		])
+		const wordOffsets = stack(lines[0].split("-").map((s) => (s.match(/\./g) || []).length + 1))
 		for (let i = 0; i < wordOffsets.length; i++) {
 			words.push(letters.slice(wordOffsets[i - 1] || 0, wordOffsets[i]))
 		}
 
 		return {
 			words,
-			letters,
 			width: letterWidths.reduce((partialSum, a) => partialSum + a, 0),
 			height: lines.length
 		}
 	}
 
-	drawCell(c: CanvasRenderingContext2D, x, y, r, padding) {
+	drawCell(c: CanvasRenderingContext2D, x: number, y: number, r: number, padding: number) {
 		c.translate(x + r, y + r / 2)
 		c.rotate(45 * (Math.PI / 180))
 		c.beginPath()
@@ -97,11 +90,9 @@ x    x x x x    x
 		const wordSpacing = r * 7
 
 		let letterOffset = 0
-		let wordOffset = 0
 
 		for (let w = 0; w < logo.words.length; w++) {
 			const word = logo.words[w]
-
 			for (let i = 0; i < word.length; i++) {
 				const letter = word[i]
 
