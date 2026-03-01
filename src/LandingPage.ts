@@ -5,18 +5,18 @@ class Particle {
 	r: number
 	s: number
 	st: number
-	permanent: boolean
+	isLogo: boolean
 
 	constructor(p: [number, number], r: number, s: number, permanent: boolean) {
 		this.p = p
 		this.r = r
 		this.s = 0
 		this.st = 0
-		this.permanent = permanent
+		this.isLogo = permanent
 	}
 
 	draw(c: CanvasRenderingContext2D) {
-		c.fillStyle = "green"
+		c.fillStyle = "black"
 		c.translate(this.p[0] + this.r / 2, this.p[1] + this.r / 2)
 		c.rotate(45 * (Math.PI / 180))
 		c.beginPath()
@@ -29,6 +29,30 @@ class Particle {
 		)
 		c.fill()
 		c.resetTransform()
+	}
+}
+
+class Attractor {
+	p: [number, number]
+	pt: [number, number]
+	start: number
+	end: number
+	match: (p: Particle) => boolean
+	d: (a: Attractor, p: Particle) => number
+
+	constructor(
+		start: number,
+		p: [number, number],
+		pt: [number, number],
+		match: (p: Particle) => boolean,
+		d: (a: Attractor, p: Particle) => number
+	) {
+		this.p = p
+		this.pt = pt
+		this.start = start
+		this.end = 10000
+		this.match = match
+		this.d = d
 	}
 }
 
@@ -78,7 +102,7 @@ x    x x x x    x
 		canvasEl.classList.add("mkvc--logo")
 
 		const styleEl = document.createElement("style")
-		styleEl.innerText = `.mkvc--logo{width: 40vw;position: absolute; left: 50%; transform: translateX(-50%) translateY(-120%); border: 1px solid red}`
+		styleEl.innerText = `.mkvc--logo{width: 40vw;position: absolute; left: 50%; transform: translateX(-50%) translateY(-120%);}`
 
 		this.containerEl.appendChild(styleEl)
 		this.containerEl.insertAdjacentElement("afterbegin", canvasEl)
@@ -95,13 +119,24 @@ x    x x x x    x
 
 	initAttractors() {
 		if (this.c) {
-			this.attractors.push({
-				start: 100,
-				end: 5000,
-				p: [this.c.canvas.width / 2, this.c.canvas.height + 10],
-				v: [0, -1],
-				active: true
-			})
+			this.attractors = [
+				new Attractor(
+					300,
+					[this.c.canvas.width / 2, this.c.canvas.height + 100],
+					[this.c.canvas.width / 2, -200],
+					() => true,
+					(a: Attractor, p: Particle) =>
+						0.65 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.005
+				),
+				new Attractor(
+					700,
+					[this.c.canvas.width / 2, this.c.canvas.height + 800],
+					[this.c.canvas.width / 2, this.c.canvas.height / 4],
+					(p: Particle) => p.isLogo,
+					(a: Attractor, p: Particle) =>
+						0.85 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.004
+				)
+			]
 		}
 	}
 
@@ -148,7 +183,6 @@ x    x x x x    x
 			const word = words[w]
 			for (let i = 0; i < word.length; i++) {
 				const letter = word[i]
-
 				for (let j = 0; j < letter.length; j++) {
 					const row = letter[j]
 					row.forEach((isLogo: boolean, k: number) => {
@@ -160,21 +194,34 @@ x    x x x x    x
 				letterOffset += letter[0].length
 			}
 		}
-		console.log(this.particles)
 	}
 
 	update() {
 		for (let i = 0; i < this.attractors.length; i++) {
-			this.attractors[i].p[0] += this.attractors[i].v[0]
-			this.attractors[i].p[1] += this.attractors[i].v[1]
-			if (this.t > this.attractors[i].end) {
+			if (this.attractors[i].start < this.t) {
+				this.attractors[i].p[0] += (this.attractors[i].pt[0] - this.attractors[i].p[0]) * 0.05
+				this.attractors[i].p[1] += (this.attractors[i].pt[1] - this.attractors[i].p[1]) * 0.05
+			}
+
+			if (this.attractors[i].end && this.t > this.attractors[i].end) {
 				this.attractors.splice(i, 1)
 			}
 		}
 
 		for (let i = 0; i < this.particles.length; i++) {
-			this.particles[i].st = 0.75
-			this.particles[i].s += (this.particles[i].st - this.particles[i].s) * 0.2
+			const p = this.particles[i]
+
+			let s = 0
+			for (let j = 0; j < this.attractors.length; j++) {
+				const a = this.attractors[j]
+				if (a.match(p)) {
+					s += Math.max(0, a.d(a, p))
+				}
+			}
+
+			p.st = Math.min(0.65, s)
+
+			this.particles[i].s += (this.particles[i].st - this.particles[i].s) * 0.25
 		}
 
 		if (this.t > 10_000) {
@@ -185,18 +232,18 @@ x    x x x x    x
 	loop() {
 		this.update()
 		//@ts-expect-error
-		this.render(this.c, this.logo)
+		this.render(this.c)
 		if (this.running) {
 			window.requestAnimationFrame(this.loop.bind(this))
 		}
 	}
 
-	render(c: CanvasRenderingContext2D, logo: any) {
+	render(c: CanvasRenderingContext2D) {
 		c.clearRect(0, 0, c.canvas.width, c.canvas.height)
-		this.attractors.forEach((a) => {
-			c.fillStyle = "red"
-			c.fillRect(a.p[0], a.p[1], 15, 15)
-		})
+		// this.attractors.forEach((a) => {
+		// 	c.fillStyle = "red"
+		// 	c.fillRect(a.p[0], a.p[1], 15, 15)
+		// })
 
 		this.particles.forEach((p) => {
 			p.draw(c)
