@@ -1,3 +1,5 @@
+import { stack, stringToBool } from "./utils"
+
 export default class LandingPage {
 	containerEl: Element
 	c: CanvasRenderingContext2D | null
@@ -5,21 +7,18 @@ export default class LandingPage {
 		letters: []
 	}
 	logoRaw: string = `
-xxxx.x.x.x.    .    .    -xxx.    .    .   .   .     
-x      x                  x                          
-xxx  x x x xxx  xxx   xx  x xx x  x  xx   xx  xx xxx 
-x    x x x x  x x  x x  x x  x x  x x  x x   x      x
-x    x x x x  x x  x x  x x  x x  x xxxx x   x    xxx
-x    x x x x  x x  x x  x x  x x  x x    x   x   x  x
-x    x x x xxx  xxx   xx   xxx  xxx  xxx x   x    xxx
-x    x x x x    x                                    
-           x    x                                    
-           x    x                                   .
+xxxx.x.x.x.    .    .    - xxx.    .    .   .   .     
+x      x                  x                           
+xxx  x x x xxx  xxx   xx  x xx x  x  xx   xx  xx xxx  
+x    x x x x  x x  x x  x x  x x  x x  x x   x      x 
+x    x x x x  x x  x x  x x  x x  x xxxx x   x    xxx 
+x    x x x x  x x  x x  x x  x x  x x    x   x   x  x 
+x    x x x xxx  xxx   xx   xxx  xxx  xxx x   x    xxx 
+x    x x x x    x                                     
+           x    x                                     
+           x    x                                    .
 `
-
 	constructor(container: Element) {
-		console.log(this.logoRaw.trim())
-
 		this.containerEl = container
 		this.logo = this.parseLogo(this.logoRaw.trim())
 		this.c = this.initCanvas()
@@ -42,33 +41,18 @@ x    x x x x    x
 		return canvasEl.getContext("2d")
 	}
 
-	stringToBool(s: string): boolean[] {
-		return s.split("").map((c) => c === "x")
-	}
-
-	stack(arr: number[]): number[] {
-		let res: number[] = []
-		let total = 0
-		arr.forEach((n) => {
-			total += n
-			res.push(total)
-		})
-		return res
-	}
-
 	parseLogo(s: string) {
 		const lines = s.split("\n")
 
 		// find boundaries
 		const letterWidths = lines[0].split(/\.|-/gi).map((s) => s.length)
-		const letterOffsets = [0, ...this.stack(letterWidths)]
+		const letterOffsets = [0, ...stack(letterWidths.map((w) => w + 1))]
 
 		let letters: boolean[][][] = []
 
 		letterOffsets.forEach((w, i) => {
 			lines.forEach((l, j) => {
-				const chunk = this.stringToBool(l.slice(letterOffsets[i], letterOffsets[i + 1]))
-
+				const chunk = stringToBool(l.slice(letterOffsets[i], letterOffsets[i + 1])).slice(0, -1)
 				if (letters[i]) {
 					letters[i][j] = chunk
 				} else {
@@ -77,47 +61,63 @@ x    x x x x    x
 			})
 		})
 
-		const wordOffsets = this.stack([
-			...lines[0]
-				.split("-")
-				.map((s) => s.length)
-				.map((v, _, arr) => v + arr.length - 1)
+		let words = []
+		const wordOffsets = stack([
+			...lines[0].split("-").map((s) => (s.match(/\./g) || []).length + 1)
 		])
+		for (let i = 0; i < wordOffsets.length; i++) {
+			words.push(letters.slice(wordOffsets[i - 1] || 0, wordOffsets[i]))
+		}
 
-		console.log(lines)
-		console.log(letters)
+		return {
+			words,
+			letters,
+			width: letterWidths.reduce((partialSum, a) => partialSum + a, 0),
+			height: lines.length
+		}
+	}
 
-		return { letters, width: lines[0].length, height: lines.length }
+	drawCell(c: CanvasRenderingContext2D, x, y, r, padding) {
+		c.translate(x + r, y + r / 2)
+		c.rotate(45 * (Math.PI / 180))
+		c.beginPath()
+		c.roundRect(-r / 2, r / r, r - padding, r - padding, r * 0.15)
+		c.fill()
+		c.resetTransform()
 	}
 
 	render(c: CanvasRenderingContext2D, logo: any) {
 		c.canvas.width = c.canvas.clientWidth
 		c.canvas.height = c.canvas.clientHeight
 
-		const r = c.canvas.width / logo.width
-		// const ph = c.canvas.height / logo.height
-		const padding = 2
+		const r = (c.canvas.width / logo.width) * 0.81
+
+		const padding = r * 0.3
+		const letterSpacing = r * 0.75
+		const wordSpacing = r * 7
+
 		let letterOffset = 0
+		let wordOffset = 0
 
-		for (let i = 0; i < logo.letters.length; i++) {
-			const letter = logo.letters[i]
+		for (let w = 0; w < logo.words.length; w++) {
+			const word = logo.words[w]
 
-			for (let j = 0; j < letter.length; j++) {
-				const row = letter[j]
+			for (let i = 0; i < word.length; i++) {
+				const letter = word[i]
 
-				row.forEach((cell: boolean, k: number) => {
-					c.fillStyle = cell ? "red" : "lightgray"
-					const x = (letterOffset + k) * r
-					const y = j * r
-					c.fillRect(x, y, r - padding, r - padding)
-				})
+				for (let j = 0; j < letter.length; j++) {
+					const row = letter[j]
+
+					row.forEach((cell: boolean, k: number) => {
+						if (cell) {
+							const x = wordSpacing * w + letterSpacing * i + (letterOffset + k) * r
+							const y = j * r
+							this.drawCell(c, x, y, r, padding)
+						}
+					})
+				}
+				letterOffset += letter[0].length
 			}
-
-			letterOffset += letter[0].length
 		}
-
-		// logo.lettters.forEach((l) => {
-		// 	// const
-		// })
 	}
 }
