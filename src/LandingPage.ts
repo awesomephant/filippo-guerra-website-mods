@@ -140,10 +140,10 @@ x    x x x x    x
 				new Attractor(
 					700,
 					[this.c.canvas.width / 2, this.c.canvas.height + 600],
-					[this.c.canvas.width / 2, this.c.canvas.height / 4],
+					[this.c.canvas.width / 2, this.c.canvas.height / 3],
 					(p: Particle) => p.isLogo,
 					(a: Attractor, p: Particle) =>
-						0.85 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.004
+						0.95 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.0035
 				)
 			]
 		}
