@@ -110,17 +110,13 @@ x    x x x x    x
 		const canvasEl = document.createElement("canvas")
 		canvasEl.classList.add("mkvc--logo")
 
-		const styleEl = document.createElement("style")
-		styleEl.innerText = `.mkvc--logo{width: 40vw;position: absolute; left: 50%; transform: translateX(-50%) translateY(-120%);}`
-
-		this.containerEl.appendChild(styleEl)
 		this.containerEl.insertAdjacentElement("afterbegin", canvasEl)
 
 		const c = canvasEl.getContext("2d")
 
 		if (c) {
-			c.canvas.width = c.canvas.clientWidth
-			c.canvas.height = c.canvas.clientHeight
+			c.canvas.width = c.canvas.clientWidth * 2.5
+			c.canvas.height = c.canvas.clientHeight * 2.5
 			return c
 		}
 		return null
@@ -138,12 +134,12 @@ x    x x x x    x
 						0.65 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.005
 				),
 				new Attractor(
-					700,
+					750,
 					[this.c.canvas.width / 2, this.c.canvas.height + 600],
 					[this.c.canvas.width / 2, this.c.canvas.height / 3],
 					(p: Particle) => p.isLogo,
 					(a: Attractor, p: Particle) =>
-						0.95 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.0035
+						0.95 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.0025
 				)
 			]
 		}
