@@ -1,5 +1,5 @@
 export default class Cursor {
-	r: number = 25
+	r: number = 15
 	containerEl: HTMLElement
 	cursorEl: HTMLElement
 	position: [number, number] = [-1, -1]
