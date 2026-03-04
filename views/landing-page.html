@@ -46,7 +46,7 @@ title: Landing Page
         left: 50%;
         transform: translateX(-50%);
         max-width: 14em;
-        bottom: 30vh;
+        bottom: 25vh;
     }
 
     .button-area {
@@ -80,14 +80,18 @@ title: Landing Page
         transform: translateX(-50%) translateY(-90%);
     }
 
-    @media (min-width: 800px) {
+    @media (min-width: 700px) {
         .mkvc--logo {
-            width: 40vw;
+            width: max(35rem, 40vw);
         }
 
         .site-password {
             font-size: 1.45em;
 
+        }
+
+        .submit-wrapper {
+            bottom: 30vh
         }
     }
 </style>
