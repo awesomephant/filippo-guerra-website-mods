@@ -247,7 +247,7 @@ x    x x x x    x
 		c.clearRect(0, 0, c.canvas.width, c.canvas.height)
 		// this.attractors.forEach((a) => {
 		// 	c.fillStyle = "red"
-		// 	c.fillRect(a.p[0], a.p[1], 15, 15)
+		// 	c.fillRect(a.p[0], a.p[1], 55, 35)
 		// })
 
 		this.particles.forEach((p) => {
