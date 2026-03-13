@@ -23,8 +23,8 @@ class Particle {
 		c.roundRect(
 			(-this.r * this.s) / 2,
 			(-this.r * this.s) / 2,
-			this.r * this.s,
-			this.r * this.s,
+			this.r * this.s * 1.15,
+			this.r * this.s * 1.15,
 			this.r * 0.15
 		)
 		c.fill()
@@ -59,6 +59,9 @@ class Attractor {
 export default class LandingPage {
 	containerEl: Element
 	passwordEl: HTMLElement
+	submitEl: HTMLElement
+	inputEl: HTMLInputElement
+	wrapperEl: HTMLElement
 	c: CanvasRenderingContext2D | null
 	attractors: any[]
 	particles: Particle[]
@@ -79,8 +82,26 @@ x    x x x x    x
            x    x                                    .
 `
 	constructor(container: Element) {
-		this.containerEl = container
-		this.passwordEl = container.querySelector(".submit-wrapper") as HTMLElement
+		this.wrapperEl = document.createElement("div")
+		this.wrapperEl.classList.add("mkvc-landing")
+		this.wrapperEl.classList.add("active")
+
+		this.containerEl = document.createElement("div")
+		this.containerEl.classList.add("mkvc-landing-container")
+
+		container.appendChild(this.wrapperEl)
+		this.wrapperEl.appendChild(this.containerEl)
+
+		this.passwordEl = document.createElement("form")
+
+		this.inputEl = document.createElement("input") as HTMLInputElement
+		this.submitEl = document.createElement("button")
+
+		this.passwordEl.appendChild(this.inputEl)
+		this.passwordEl.appendChild(this.submitEl)
+
+		this.containerEl.appendChild(this.passwordEl)
+
 		this.logo = this.parseLogo(this.logoRaw.trim())
 		this.attractors = []
 		this.particles = []
@@ -95,8 +116,8 @@ x    x x x x    x
 		}
 
 		this.clock = window.setInterval(() => {
-			this.t += 100
-		}, 100)
+			this.t += 200
+		}, 200)
 
 		this.passwordEl.style.opacity = "0"
 
@@ -104,6 +125,13 @@ x    x x x x    x
 			this.passwordEl.style.transition = "600ms"
 			this.passwordEl.style.opacity = "1"
 		}, 1600)
+
+		this.submitEl.addEventListener("click", (e) => {
+			e.preventDefault()
+			if (this.inputEl.value === "test") {
+				this.wrapperEl.classList.remove("active")
+			}
+		})
 	}
 
 	initCanvas() {
@@ -218,6 +246,7 @@ x    x x x x    x
 			const p = this.particles[i]
 
 			let s = 0
+
 			for (let j = 0; j < this.attractors.length; j++) {
 				const a = this.attractors[j]
 				if (a.match(p)) {
@@ -237,6 +266,7 @@ x    x x x x    x
 
 	loop() {
 		this.update()
+
 		//@ts-expect-error
 		this.render(this.c)
 		if (this.running) {

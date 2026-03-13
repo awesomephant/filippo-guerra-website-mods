@@ -33,7 +33,7 @@ export default class ScrollUp {
 
 		buttonEl.setAttribute(
 			"style",
-			`display: inline-flex; font-size: inherit; appearance: none; border: 0; background: transparent; cursor: pointer`
+			`display: inline-flex; font-size: inherit; appearance: none; border: 0; background: transparent; cursor: none`
 		)
 
 		this.containerEl.querySelector("div:last-child")?.insertAdjacentElement("beforebegin", buttonEl)

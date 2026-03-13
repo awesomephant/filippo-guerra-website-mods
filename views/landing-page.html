@@ -4,27 +4,57 @@ title: Landing Page
 ---
 
 <style>
-    .site-password {
+    .mkvc-landing {
         position: fixed;
+        font-size: .95em;
+        cursor: none;
+        background: white;
+        z-index: 1000;
         top: 0;
-        bottom: 0;
         left: 0;
         right: 0;
-        text-align: center;
-        margin: auto;
-        height: 0;
-        width: 340px;
-        display: table;
-        font-size: 1.25em;
+        bottom: 0;
+        transition: opacity 100ms;
+        opacity: 0;
+        pointer-events: none;
     }
 
-    .site-password input {
+    .mkvc-landing.active {
+        opacity: 1;
+        pointer-events: all;
+
+    }
+
+    .mkvc-landing-container {
+        gap: 10vh;
+        transform: translateX(-50%) translateY(-45%);
+        flex-flow: column;
+        top: 50%;
+        display: flex;
+        left: 50%;
+        width: 80vw;
+        position: absolute;
+    }
+
+    .mkvc--logo {
+        aspect-ratio: 5.741/1;
+        width: 100%;
+    }
+
+    .mkvc-landing form {
+        position: relative;
+        margin: 0 auto;
+        max-width: 320px;
+        width: 100%;
+        height: 2.5rem;
+        border: 1px solid currentColor;
+        border-radius: 6px;
+    }
+
+    .mkvc-landing input {
         border: 0;
         width: 100%;
         height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
         padding: 0 .75em;
         padding-top: .1em;
         background: none;
@@ -32,56 +62,32 @@ title: Landing Page
         letter-spacing: .01em;
     }
 
-    input:focus {
+    .mkvc-landing input:focus {
         outline: 0;
     }
 
-    .submit-wrapper {
-        border: 1px solid black;
-        border-radius: 8px;
-        overflow: hidden;
-        height: 2.5em;
-        position: fixed;
-        width: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 16em;
-        bottom: 25vh;
-    }
-
-    .button-area {
-        position: absolute;
-        width: 2.05em;
-        height: 2.05em;
-        bottom: 0;
-        top: .15em;
-        right: .15em;
-    }
-
-    .button-area button {
+    .mkvc-landing button {
         background: black;
-        border-radius: 6px;
+        border-radius: 4px;
         border: 0;
-        width: 100%;
-        height: 100%;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        display: block;
+        transform: translateY(-50%);
+
+        height: calc(100% - .4em);
+        right: .2em;
+        aspect-ratio: 1 / 1;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 23.5652 43.4057'%3E%3Cpath fill='white' class='b' d='m23.4334,21.3838L2.1797.1318c-.1758-.1758-.4605-.1758-.6363,0L.1318,1.5434c-.0844.0844-.1318.1986-.1318.3182s.0475.2338.1318.3182l19.524,19.5223L.1318,41.226c-.1758.1758-.1758.4605,0,.6363l1.4115,1.4115c.0879.0879.2021.1318.3182.1318s.2303-.0439.3182-.1318l21.2537-21.2537c.0844-.0844.1318-.1986.1318-.3182s-.0475-.2338-.1318-.3182Z'/%3E%3C/svg%3E");
-        background-size: 40%;
+        background-size: 35%;
         background-repeat: no-repeat;
         background-position: center;
-        cursor: pointer;
-    }
-
-    .mkvc--logo {
-        aspect-ratio: 5.741/1;
-        width: 80vw;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-90%);
+        cursor: none;
     }
 
     @media (min-width: 700px) {
-        .mkvc--logo {
+        .mkvc-landing-container {
             width: max(35rem, 40vw);
         }
 
@@ -92,18 +98,7 @@ title: Landing Page
         }
 
         .submit-wrapper {
-            bottom: 30vh
+            bottom: Min(20vh, 10rem)
         }
     }
 </style>
-
-<div class="landing"></div>
-
-<div class="site-password">
-    <form class="submit-wrapper">
-        <input name="pw" type="password" placeholder="Enter password..." autofocus="">
-        <div class="button-area">
-            <button type="submit" class="submit-button"></button>
-        </div>
-    </form>
-</div>

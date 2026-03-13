@@ -9,6 +9,7 @@ export default {
 	output: {
 		dir: "_site",
 		entryFileNames: "[name].js",
+		strict: false,
 		format: "cjs"
 	},
 	plugins: [typescript(), image(), terser()]

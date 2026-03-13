@@ -10,7 +10,7 @@ export default class Cursor {
 	constructor(container: HTMLElement) {
 		this.containerEl = container
 		this.cursorEl = document.createElement("div")
-		this.cursorEl.style = `transition: opacity 100ms; pointer-events: none; mix-blend-mode: difference; background: white;position: fixed;top: 0;left: 0;width: ${this.r}px; height: ${this.r}px; border-radius: ${this.r * 0.2}px`
+		this.cursorEl.style = `transition: opacity 100ms; z-index: 9999; pointer-events: none; mix-blend-mode: difference; background: white;position: fixed;top: 0;left: 0;width: ${this.r}px; height: ${this.r}px; border-radius: ${this.r * 0.2}px`
 
 		const styleEl = document.createElement("style")
 		styleEl.innerText = "body, body * { cursor: none}"
@@ -42,11 +42,6 @@ export default class Cursor {
 		window.addEventListener("mouseover", () => {
 			this.running = true
 			this.loop()
-		})
-		window.addEventListener("mouseout", () => {
-			this.active = false
-			this.running = false
-			this.render()
 		})
 	}
 }
