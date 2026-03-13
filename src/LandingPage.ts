@@ -115,8 +115,8 @@ x    x x x x    x
 		const c = canvasEl.getContext("2d")
 
 		if (c) {
-			c.canvas.width = c.canvas.clientWidth * 2.5
-			c.canvas.height = c.canvas.clientHeight * 2.5
+			c.canvas.width = c.canvas.clientWidth * 3.5
+			c.canvas.height = c.canvas.clientHeight * 3.5
 			return c
 		}
 		return null
@@ -165,6 +165,7 @@ x    x x x x    x
 		})
 
 		const wordOffsets = stack(lines[0].split("-").map((s) => (s.match(/\./g) || []).length + 1))
+
 		for (let i = 0; i < wordOffsets.length; i++) {
 			words.push(letters.slice(wordOffsets[i - 1] || 0, wordOffsets[i]))
 		}
@@ -245,11 +246,6 @@ x    x x x x    x
 
 	render(c: CanvasRenderingContext2D) {
 		c.clearRect(0, 0, c.canvas.width, c.canvas.height)
-		// this.attractors.forEach((a) => {
-		// 	c.fillStyle = "red"
-		// 	c.fillRect(a.p[0], a.p[1], 55, 35)
-		// })
-
 		this.particles.forEach((p) => {
 			p.draw(c)
 		})
