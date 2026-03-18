@@ -7,10 +7,12 @@ footerEl
 	? new ScrollUp(footerEl)
 	: console.warn("Could not initialise scroll to top (container not found)")
 
-const cursorEl = document.body
-cursorEl ? new Cursor(cursorEl) : console.warn("Could not initialise cursor (container not found)")
-
 if (!document.body.classList.contains("editing")) {
+	const cursorEl = document.body
+	cursorEl
+		? new Cursor(cursorEl)
+		: console.warn("Could not initialise cursor (container not found)")
+
 	const logoEl = document.querySelector("body")
 	logoEl
 		? new LandingPage(logoEl)
