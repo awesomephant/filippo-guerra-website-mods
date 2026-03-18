@@ -3,7 +3,33 @@ layout: base.liquid
 title: Landing Page
 ---
 
+<p>Page content goes here</p>
+
 <style>
+    @keyframes mkvc-shake {
+
+        10%,
+        90% {
+            transform: translate3d(-1px, 0, 0);
+        }
+
+        20%,
+        80% {
+            transform: translate3d(2px, 0, 0);
+        }
+
+        30%,
+        50%,
+        70% {
+            transform: translate3d(-4px, 0, 0);
+        }
+
+        40%,
+        60% {
+            transform: translate3d(4px, 0, 0);
+        }
+    }
+
     .mkvc-landing {
         position: fixed;
         font-size: .95em;
@@ -14,7 +40,7 @@ title: Landing Page
         left: 0;
         right: 0;
         bottom: 0;
-        transition: opacity 100ms;
+        transition: opacity 300ms;
         opacity: 0;
         pointer-events: none;
     }
@@ -75,7 +101,6 @@ title: Landing Page
         right: 0;
         display: block;
         transform: translateY(-50%);
-
         height: calc(100% - .4em);
         right: .2em;
         aspect-ratio: 1 / 1;
@@ -84,6 +109,15 @@ title: Landing Page
         background-repeat: no-repeat;
         background-position: center;
         cursor: none;
+        transition: 200ms;
+    }
+
+    .mkvc-landing.loading button {
+        opacity: .7;
+    }
+
+    .mkvc-landing.error form {
+        animation: mkvc-shake 500ms cubic-bezier(.36, .07, .19, .97) both
     }
 
     @media (min-width: 700px) {

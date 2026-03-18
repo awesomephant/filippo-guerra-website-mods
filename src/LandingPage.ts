@@ -67,6 +67,7 @@ export default class LandingPage {
 	particles: Particle[]
 	logo: any
 	t: number
+	password: string = "test"
 	running: boolean = true
 	clock: number
 	logoRaw: string = `
@@ -95,10 +96,13 @@ x    x x x x    x
 		this.passwordEl = document.createElement("form")
 
 		this.inputEl = document.createElement("input") as HTMLInputElement
+		this.inputEl.setAttribute("type", "password")
+		this.inputEl.setAttribute("placeholder", "Enter password...")
 		this.submitEl = document.createElement("button")
 
 		this.passwordEl.appendChild(this.inputEl)
 		this.passwordEl.appendChild(this.submitEl)
+		this.passwordEl.style.opacity = "0"
 
 		this.containerEl.appendChild(this.passwordEl)
 
@@ -119,18 +123,29 @@ x    x x x x    x
 			this.t += 200
 		}, 200)
 
-		this.passwordEl.style.opacity = "0"
-
 		window.setTimeout(() => {
 			this.passwordEl.style.transition = "600ms"
 			this.passwordEl.style.opacity = "1"
 		}, 1600)
 
+		this.bindEvents()
+	}
+
+	bindEvents() {
 		this.submitEl.addEventListener("click", (e) => {
 			e.preventDefault()
-			if (this.inputEl.value === "test") {
-				this.wrapperEl.classList.remove("active")
-			}
+			this.wrapperEl.classList.add("loading")
+			window.setTimeout(() => {
+				if (this.inputEl.value === this.password) {
+					this.wrapperEl.classList.remove("active")
+				} else {
+					this.wrapperEl.classList.add("error")
+					this.wrapperEl.classList.remove("loading")
+					window.setTimeout(() => {
+						this.wrapperEl.classList.remove("error")
+					}, 1000)
+				}
+			}, 500)
 		})
 	}
 
@@ -162,12 +177,12 @@ x    x x x x    x
 						0.65 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.005
 				),
 				new Attractor(
-					750,
+					850,
 					[this.c.canvas.width / 2, this.c.canvas.height + 600],
 					[this.c.canvas.width / 2, this.c.canvas.height / 3],
 					(p: Particle) => p.isLogo,
 					(a: Attractor, p: Particle) =>
-						0.95 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.0025
+						0.95 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.00125
 				)
 			]
 		}
