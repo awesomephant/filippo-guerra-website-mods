@@ -86,7 +86,7 @@ x    x x x x    x
            x    x                                    .
 `
 	constructor(container: Element) {
-		const lastLogin = localStorage.getItem("mkcv--last-login") || false
+		const lastLogin = localStorage.getItem("mkvc--last-login") || false
 
 		if (lastLogin && Date.now() - parseInt(lastLogin) < daysToMs(1)) {
 			return
@@ -149,7 +149,7 @@ x    x x x x    x
 				if (this.inputEl.value === this.password) {
 					this.wrapperEl.classList.remove("active")
 					document.body.style.overflow = "auto"
-					localStorage.setItem("mkcv--last-login", `${Date.now()}`)
+					localStorage.setItem("mkvc--last-login", `${Date.now()}`)
 				} else {
 					this.wrapperEl.classList.add("error")
 					this.wrapperEl.classList.remove("loading")

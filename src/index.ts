@@ -13,8 +13,8 @@ if (!document.body.classList.contains("editing")) {
 		? new Cursor(cursorEl)
 		: console.warn("Could not initialise cursor (container not found)")
 
-	// const logoEl = document.querySelector("body")
-	// logoEl
-	// 	? new LandingPage(logoEl)
-	// 	: console.warn("Could not initialise landing page (container not found)")
+	// 	const logoEl = document.querySelector("body")
+	// 	logoEl
+	// 		? new LandingPage(logoEl)
+	// 		: console.warn("Could not initialise landing page (container not found)")
 }
