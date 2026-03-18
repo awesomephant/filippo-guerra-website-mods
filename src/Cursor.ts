@@ -54,9 +54,16 @@ export default class Cursor {
 		this.touchMq.addEventListener("change", () => {
 			this.initUnlessTouch()
 		})
+		window.addEventListener("touchstart", () => {
+			this.isTouch = true
+			this.active = false
+		})
+
 		window.addEventListener("mousemove", (e) => {
 			this.position = [e.clientX, e.clientY]
-			this.active = true
+			if (!this.isTouch) {
+				this.active = true
+			}
 		})
 		window.addEventListener("mouseover", () => {
 			this.running = true
