@@ -32,6 +32,9 @@ class Particle {
 	}
 }
 
+function daysToMs(ds: number) {
+	return ds * 1000 * 60 * 60 * 24
+}
 class Attractor {
 	p: [number, number]
 	pt: [number, number]
@@ -83,6 +86,11 @@ x    x x x x    x
            x    x                                    .
 `
 	constructor(container: Element) {
+		const lastLogin = localStorage.getItem("mkcv--last-login") || false
+
+		if (lastLogin && Date.now() - parseInt(lastLogin) < daysToMs(1)) {
+			return
+		}
 		this.wrapperEl = document.createElement("div")
 		this.wrapperEl.classList.add("mkvc-landing")
 		this.wrapperEl.classList.add("active")
@@ -141,6 +149,7 @@ x    x x x x    x
 				if (this.inputEl.value === this.password) {
 					this.wrapperEl.classList.remove("active")
 					document.body.style.overflow = "auto"
+					localStorage.setItem("mkcv--last-login", `${Date.now()}`)
 				} else {
 					this.wrapperEl.classList.add("error")
 					this.wrapperEl.classList.remove("loading")

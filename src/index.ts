@@ -10,7 +10,7 @@ footerEl
 const cursorEl = document.body
 cursorEl ? new Cursor(cursorEl) : console.warn("Could not initialise cursor (container not found)")
 
-if (!document.body.classList.contains("is-editing")) {
+if (!document.body.classList.contains("editing")) {
 	const logoEl = document.querySelector("body")
 	logoEl
 		? new LandingPage(logoEl)
