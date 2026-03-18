@@ -6,6 +6,8 @@ export default class Cursor {
 	scale: number = 1
 	active: boolean = false
 	running: boolean = false
+	isTouch: boolean = false
+	touchMq: MediaQueryList
 
 	constructor(container: HTMLElement) {
 		this.containerEl = container
@@ -18,8 +20,22 @@ export default class Cursor {
 
 		this.containerEl.appendChild(this.cursorEl)
 
+		this.touchMq = window.matchMedia("(pointer: coarse)")
+
+		this.initUnlessTouch()
 		this.registerEvents()
 		this.loop()
+	}
+
+	initUnlessTouch() {
+		this.isTouch = this.touchMq.matches
+		if (this.isTouch) {
+			this.active = false
+			this.running = false
+		} else {
+			this.running = true
+			this.loop()
+		}
 	}
 
 	loop() {
@@ -35,6 +51,9 @@ export default class Cursor {
 	}
 
 	registerEvents() {
+		this.touchMq.addEventListener("change", () => {
+			this.initUnlessTouch()
+		})
 		window.addEventListener("mousemove", (e) => {
 			this.position = [e.clientX, e.clientY]
 			this.active = true
