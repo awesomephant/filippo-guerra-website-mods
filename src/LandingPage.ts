@@ -81,7 +81,7 @@ x    x x x x  x x  x x  x x  x x  x x  x x   x      x
 x    x x x x  x x  x x  x x  x x  x xxxx x   x    xxx 
 x    x x x x  x x  x x  x x  x x  x x    x   x   x  x 
 x    x x x xxx  xxx   xx   xxx  xxx  xxx x   x    xxx 
-x    x x x x    x                                     
+           x    x                                     
            x    x                                     
            x    x                                    .
 `
@@ -237,10 +237,10 @@ x    x x x x    x
 	}
 
 	initParticles(c: CanvasRenderingContext2D, words: any[], width: number) {
-		const r = (c.canvas.width / width) * 0.81
+		const r = (c.canvas.width / width) * 0.745
 
-		const letterSpacing = r * 0.7
-		const wordSpacing = r * 7.25
+		const letterSpacing = r * 1.1
+		const wordSpacing = r * 9.5
 
 		let letterOffset = 0
 
