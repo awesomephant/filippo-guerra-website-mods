@@ -9,4 +9,6 @@ export default function (eleventyConfig) {
 		return records
 	})
 	eleventyConfig.addPassthroughCopy("assets")
+	eleventyConfig.addPassthroughCopy("./style.css")
+	eleventyConfig.addWatchTarget("./style.css")
 }

@@ -86,6 +86,7 @@ x    x x x x    x
 		this.wrapperEl = document.createElement("div")
 		this.wrapperEl.classList.add("mkvc-landing")
 		this.wrapperEl.classList.add("active")
+		document.body.style.overflow = "hidden"
 
 		this.containerEl = document.createElement("div")
 		this.containerEl.classList.add("mkvc-landing-container")
@@ -97,6 +98,7 @@ x    x x x x    x
 
 		this.inputEl = document.createElement("input") as HTMLInputElement
 		this.inputEl.setAttribute("type", "password")
+		this.inputEl.setAttribute("autocomplete", "new-password")
 		this.inputEl.setAttribute("placeholder", "Enter password...")
 		this.submitEl = document.createElement("button")
 
@@ -123,8 +125,8 @@ x    x x x x    x
 			this.t += 200
 		}, 200)
 
+		this.passwordEl.style.transition = "600ms"
 		window.setTimeout(() => {
-			this.passwordEl.style.transition = "600ms"
 			this.passwordEl.style.opacity = "1"
 		}, 1600)
 
@@ -138,6 +140,7 @@ x    x x x x    x
 			window.setTimeout(() => {
 				if (this.inputEl.value === this.password) {
 					this.wrapperEl.classList.remove("active")
+					document.body.style.overflow = "auto"
 				} else {
 					this.wrapperEl.classList.add("error")
 					this.wrapperEl.classList.remove("loading")
@@ -156,6 +159,10 @@ x    x x x x    x
 		this.containerEl.insertAdjacentElement("afterbegin", canvasEl)
 
 		const c = canvasEl.getContext("2d")
+
+		window.setTimeout(() => {
+			canvasEl.style.opacity = "1"
+		}, 300)
 
 		if (c) {
 			c.canvas.width = c.canvas.clientWidth * 3.5
@@ -182,7 +189,7 @@ x    x x x x    x
 					[this.c.canvas.width / 2, this.c.canvas.height / 3],
 					(p: Particle) => p.isLogo,
 					(a: Attractor, p: Particle) =>
-						0.95 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.00125
+						0.95 - Math.sqrt((a.p[1] - p.p[1]) * (a.p[1] - p.p[1])) * 0.0015
 				)
 			]
 		}
