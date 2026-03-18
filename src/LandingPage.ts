@@ -70,7 +70,7 @@ export default class LandingPage {
 	particles: Particle[]
 	logo: any
 	t: number
-	password: string = "test"
+	password: string = "fgds"
 	running: boolean = true
 	clock: number
 	logoRaw: string = `
