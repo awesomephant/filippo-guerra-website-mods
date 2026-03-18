@@ -23,7 +23,7 @@
 
 .mkvc-landing {
 	position: fixed;
-	font-size: 0.95em;
+	font-size: 1rem;
 	cursor: none;
 	background: white;
 	z-index: 1000;
